@@ -26,7 +26,7 @@ function Register({ handleRegister }) {
         },
         body: JSON.stringify({ username, password }),
       });
-      console.log(response);
+    //   console.log(response);
       if (
         response.status === 409 ||
         response.status === 401 ||

@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserStateContext } from "../../App";
-import Button from "react-bootstrap/Button";
 
 function Home() {
   const { userState } = useContext(UserStateContext);
@@ -50,7 +49,7 @@ function Home() {
         setMessage(responseData.error);
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       setMessage("An error occurred while processing your guess.");
       resetAnswerAndMessageAfterDelay()
     }
@@ -66,7 +65,7 @@ function Home() {
           Authorization: `Bearer ${userState}`, // Include the token in the Authorization header
         }
       });
-      console.log(response);
+      // console.log(response);
       if (response.status === 401) {
         navigate("/"); // Navigate back to the login page if the token is invalid
         return;
@@ -78,7 +77,7 @@ function Home() {
         resetAnswerAndMessageAfterDelay()
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       setMessage("An error occurred while processing answer.");
       resetAnswerAndMessageAfterDelay()
     }
