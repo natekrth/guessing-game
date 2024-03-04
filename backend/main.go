@@ -144,5 +144,6 @@ func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
 	r.POST("/register", AuthController.Register)
+	r.POST("/login", AuthController.Login)
 	r.Run("localhost:8080")
 }
