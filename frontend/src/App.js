@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 
 import Home from "./pages/home/Home";
 import Login from './pages/login/Login';
+import Register from './pages/register/Register';
 
 const UserStateContext = createContext();
 
@@ -20,6 +21,7 @@ function App() {
         <UserStateContext.Provider value={{ userState, handleLogin }}>
             <Routes>
                 <Route path="/" element={<Login handleLogin={handleLogin} />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
