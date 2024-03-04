@@ -1,9 +1,9 @@
 # Guessing Game
 
 This guessing number game between 1 to 10.
-Application Frontend: ReactJS
-Appication Backend: Golang
-Database: MySQL
+- Application Frontend: ReactJS
+- Appication Backend: Golang
+- Database: MySQL
 
 ## Project Setup Guide
 
