@@ -1,4 +1,4 @@
-<img width="1282" alt="register-page" src="https://github.com/natekrth/guessing-game/assets/77069581/fd522c0d-49e4-4478-88c6-20cefd8aa7f2"># Guessing Game
+# Guessing Game
 
 This guessing number game between 1 to 10.
 
