@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({ handleLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [notify, setNotify] = useState("");
@@ -26,13 +26,14 @@ function Login() {
         },
         body: JSON.stringify({ username, password })
       });
-      // console.log(response);
+
       if (response.status === 409 || response.status === 401 || response.status === 404) {
         setNotify("Login Failed");
         resetNotifyAfterDelay();
-      }
-      if (response.status === 200) {
-        navigate("/")
+      } else if (response.status === 200) {
+        const data = await response.json();
+        handleLogin(data.token); // Update userState with token
+        navigate("/home"); // Redirect to Home page
       }
     } catch (error) {
       setNotify("Failed to login. Please try again.");
