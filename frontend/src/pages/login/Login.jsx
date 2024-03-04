@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login({ handleLogin }) {
   const [username, setUsername] = useState("");
@@ -78,6 +78,7 @@ function Login({ handleLogin }) {
               required
             />
           </div>
+          <p><Link to="/register">Click Here To Register</Link></p>
           <button type="submit" class="btn btn-primary">
             Login
           </button>
