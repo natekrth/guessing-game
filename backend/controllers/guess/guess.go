@@ -19,7 +19,6 @@ var attempts int
 func GuessHandler(c *gin.Context) {
 	var requestBody map[string]int
 
-	// Parse JSON body
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
@@ -57,5 +56,5 @@ func GuessHandler(c *gin.Context) {
 		hint += "lower"
 	}
 
-	c.JSON(http.StatusOK, gin.H{"hint": hint, "attempts": attempts})
+	c.JSON(http.StatusOK, gin.H{"message": hint, "attempts": attempts})
 }

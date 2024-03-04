@@ -145,7 +145,13 @@ func main() {
 	orm.InitDB()
 
 	r := gin.Default()
-	r.Use(cors.Default())
+	// CORS configuration
+    config := cors.DefaultConfig()
+    config.AllowOrigins = []string{"*"} // Allow all origins
+    config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+    config.AllowHeaders = []string{"Authorization", "Content-Type"} // Allow Authorization header
+    r.Use(cors.New(config))
+
 	r.POST("/register", AuthController.Register)
 	r.POST("/login", AuthController.Login)
 	r.POST("/guess", middleware.JWTAuthen(), GuessController.GuessHandler)
