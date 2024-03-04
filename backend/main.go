@@ -116,6 +116,7 @@ import (
 	AuthController "github.com/natekrth/guessing-game/controllers/auth"
 	GuessController "github.com/natekrth/guessing-game/controllers/guess"
 	"github.com/natekrth/guessing-game/orm"
+	"github.com/natekrth/guessing-game/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -147,6 +148,6 @@ func main() {
 	r.Use(cors.Default())
 	r.POST("/register", AuthController.Register)
 	r.POST("/login", AuthController.Login)
-	r.POST("/guess", GuessController.GuessHandler)
+	r.POST("/guess", middleware.JWTAuthen(), GuessController.GuessHandler)
 	r.Run("localhost:8080")
 }
