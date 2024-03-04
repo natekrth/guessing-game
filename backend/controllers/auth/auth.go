@@ -29,7 +29,7 @@ func Register(c *gin.Context) {
 	var userExist orm.User
 	orm.Db.Where("username = ?", json.Username).First(&userExist)
 	if userExist.ID > 0 {
-		c.JSON(http.StatusOK, gin.H{"status": "error", "message": "User Exists"})
+		c.JSON(http.StatusConflict, gin.H{"status": "error", "message": "User Already Exists"})
 		return
 	}
 	// Create User
@@ -39,7 +39,7 @@ func Register(c *gin.Context) {
 	if user.ID > 0 {
 		c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "User Create Success", "userId": user.ID})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"status": "error", "message": "User Create Failed"})
+		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "message": "User Create Failed"})
 	}
 }
 
@@ -59,7 +59,7 @@ func Login(c *gin.Context) {
 	var userExist orm.User
 	orm.Db.Where("username = ?", json.Username).First(&userExist)
 	if userExist.ID == 0 {
-		c.JSON(http.StatusOK, gin.H{"status": "error", "message": "User Does Not Exists"})
+		c.JSON(http.StatusNotFound, gin.H{"status": "error", "message": "User Does Not Exists"})
 		return
 	}
 	err := bcrypt.CompareHashAndPassword([]byte(userExist.Password), []byte(json.Password))
@@ -75,6 +75,6 @@ func Login(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Login Success", "token": tokenString})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"status": "error", "message": "Login Failed"})
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "message": "Login Failed"})
 	}
 }
