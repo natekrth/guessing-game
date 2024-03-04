@@ -62,3 +62,20 @@ func GuessHandler(c *gin.Context) {
 func GuessAnswer(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"answer": guessingNumber})
 }
+
+func UpdateAnswer(c *gin.Context) {
+    var requestBody struct {
+        Update int `json:"update"`
+    }
+
+    if err := c.ShouldBindJSON(&requestBody); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+        return
+    }
+
+    update := requestBody.Update
+
+    guessingNumber := (guessingNumber * rand.Intn(update)) % 10 // random new number from the update seed
+
+    c.JSON(http.StatusOK, gin.H{"answer": guessingNumber})
+}
