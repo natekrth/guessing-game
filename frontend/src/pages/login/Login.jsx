@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [username, setUsername] = useState({ username: ""});
-  const [password, setPassword] = useState({ password: "" });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [notify, setNotify] = useState("");
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -13,16 +15,41 @@ function Login() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Here you can add your logic for handling login submission
-    console.log('Username:', username);
-    console.log('Password:', password);
+
+    try {
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+      });
+      // console.log(response);
+      if (response.status === 409 || response.status === 401 || response.status === 404) {
+        setNotify("Login Failed");
+        resetNotifyAfterDelay();
+      }
+      if (response.status === 200) {
+        navigate("/")
+      }
+    } catch (error) {
+      setNotify("Failed to login. Please try again.");
+      resetNotifyAfterDelay();
+    }
+  };
+
+  const resetNotifyAfterDelay = () => {
+    setTimeout(() => {
+      setNotify("");
+    }, 5000);
   };
   
   return (
     <div>
       <h2>Login</h2>
+      <p>{notify}</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Username:</label>
@@ -50,4 +77,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;
