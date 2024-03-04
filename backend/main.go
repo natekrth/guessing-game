@@ -155,5 +155,6 @@ func main() {
 	r.POST("/register", AuthController.Register)
 	r.POST("/login", AuthController.Login)
 	r.POST("/guess", middleware.JWTAuthen(), GuessController.GuessHandler)
+	r.GET("/guess/ans", middleware.JWTAuthen(), GuessController.GuessAnswer)
 	r.Run("localhost:8080")
 }

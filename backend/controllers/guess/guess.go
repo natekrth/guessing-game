@@ -58,3 +58,7 @@ func GuessHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": hint, "attempts": attempts})
 }
+
+func GuessAnswer(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"answer": guessingNumber})
+}
