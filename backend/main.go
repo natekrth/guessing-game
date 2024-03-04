@@ -116,7 +116,6 @@ import (
 	AuthController "github.com/natekrth/guessing-game/controllers/auth"
 	GuessController "github.com/natekrth/guessing-game/controllers/guess"
 	"github.com/natekrth/guessing-game/orm"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -133,6 +132,8 @@ type User struct {
 	Username string
 	Password string
 }
+
+var guessingNumber int
 
 func main() {
 	err := godotenv.Load(".env")

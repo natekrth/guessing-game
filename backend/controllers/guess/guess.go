@@ -12,30 +12,15 @@ import (
 	_"github.com/natekrth/guessing-game/orm"
 )
 
-var guessingNumber int
+var guessingNumber = rand.Intn(10)
 var attempts int
 
 var hmacSampleSecret []byte
 
 func GuessHandler(c *gin.Context) {
 	var requestBody map[string]int
-	hmacSampleSecret = []byte(os.Getenv("JWT_SECRET_KEY"))
-	header := c.Request.Header.Get("Authorization")
-	tokenString := strings.Replace(header, "Bearer ", "", 1)
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
-		}
 
-		return hmacSampleSecret, nil
-	})
-
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
-	} else {
-		c.JSON(http.StatusOK, gin.H{"status": "forbidden", "message": err.Error()})
-	}
-
+	// Parse JSON body
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
@@ -48,31 +33,48 @@ func GuessHandler(c *gin.Context) {
 		return
 	}
 
-	// Check if the guess is correct
-	if guess == guessingNumber {
-		// Regenerate the number
-		guessingNumber = rand.Intn(10)
-		numAttempts := attempts
-		attempts = 0 // Reset attempts on correct
+	hmacSampleSecret = []byte(os.Getenv("JWT_SECRET_KEY"))
+	header := c.Request.Header.Get("Authorization")
+	tokenString := strings.Replace(header, "Bearer ", "", 1)
+	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, okay := token.Method.(*jwt.SigningMethodHMAC); !okay {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
 
-		// Return HTTP 201 Created with the JSON response
-		c.JSON(http.StatusCreated, gin.H{
-			"message":  "YES! You guessed it right!",
-			"attempts": numAttempts,
-		})
-		return
-	}
+		return hmacSampleSecret, nil
+	})
 
-	// Increment the attempts
-	attempts++
+	if claims, okay := token.Claims.(jwt.MapClaims); okay && token.Valid {
+		// Check if the guess is correct
+		if guess == guessingNumber {
+			// Regenerate the number
+			guessingNumber = rand.Intn(10)
+			numAttempts := attempts
+			attempts = 0 // Reset attempts on correct
 
-	// Return a hint if the guess is wrong
-	hint := "Try again, the number is "
-	if guess < guessingNumber {
-		hint += "higher"
+			// Return HTTP 201 Created with the JSON response
+			c.JSON(http.StatusCreated, gin.H{
+				"message":  "YES! You guessed it right!",
+				"attempts": numAttempts,
+			})
+			return
+		}
+
+		// Increment the attempts
+		attempts++
+
+		// Return a hint if the guess is wrong
+		hint := "Try again, the number is "
+		if guess < guessingNumber {
+			hint += "higher"
+		} else {
+			hint += "lower"
+		}
+
+		c.JSON(http.StatusOK, gin.H{"hint": hint, "attempts": attempts, "header": header, "t": tokenString})
+		fmt.Println(claims["userId"])
 	} else {
-		hint += "lower"
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Please Login before guessing the number."})
 	}
-
-	c.JSON(http.StatusOK, gin.H{"hint": hint, "attempts": attempts, "header": header, "t": tokenString})
 }
+
