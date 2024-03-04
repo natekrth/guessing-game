@@ -30,7 +30,8 @@ function Register({ handleRegister }) {
       if (
         response.status === 409 ||
         response.status === 401 ||
-        response.status === 404
+        response.status === 404 ||
+        response.status === 400
       ) {
         setNotify("Register Failed");
         resetNotifyAfterDelay();
