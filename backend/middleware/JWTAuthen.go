@@ -42,10 +42,6 @@ func JWTAuthen() gin.HandlerFunc {
         }
 
         userID, ok := claims["userId"].(string)
-        // if !ok {
-        //     c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid user ID in token"})
-        //     return
-        // }
 
         // Set the user ID in the context
         c.Set("userId", userID)

@@ -43,7 +43,6 @@ func Register(c *gin.Context) {
 	}
 }
 
-// Binding from JSON
 type LoginBody struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
@@ -69,7 +68,6 @@ func Login(c *gin.Context) {
 			"userId": userExist.ID,
 			"exp":    time.Now().Add(time.Minute * 1).Unix(), // expiration time for token
 		})
-		// Sign and get the complete encoded token as a string using the secret
 		tokenString, err := token.SignedString(hmacSampleSecret)
 		fmt.Println(tokenString, err)
 
