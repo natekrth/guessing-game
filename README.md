@@ -1,4 +1,4 @@
-# Guessing Game
+<img width="1282" alt="register-page" src="https://github.com/natekrth/guessing-game/assets/77069581/fd522c0d-49e4-4478-88c6-20cefd8aa7f2"># Guessing Game
 
 This guessing number game between 1 to 10.
 
@@ -80,3 +80,15 @@ This guessing number game between 1 to 10.
 
   **Return JSON**
    - `answer`
+
+## User Interface
+### Register Page
+<img width="1282" alt="register-page" src="https://github.com/natekrth/guessing-game/assets/77069581/ca7bdd11-cde9-4ae4-93bb-f99764c2b6e1">
+
+### Login Page
+<img width="1282" alt="login-page" src="https://github.com/natekrth/guessing-game/assets/77069581/695006c4-89d9-4bbd-8892-ecd15561bd82">
+
+### Guessing Game Page
+<img width="1289" alt="guessing-game-page" src="https://github.com/natekrth/guessing-game/assets/77069581/d6f6bf6f-b95d-46c9-8856-23a2d9277b19">
+
+
