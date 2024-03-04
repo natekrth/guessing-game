@@ -114,6 +114,7 @@ package main
 import (
 	"fmt"
 	AuthController "github.com/natekrth/guessing-game/controllers/auth"
+	GuessController "github.com/natekrth/guessing-game/controllers/guess"
 	"github.com/natekrth/guessing-game/orm"
 
 	"github.com/gin-contrib/cors"
@@ -145,5 +146,6 @@ func main() {
 	r.Use(cors.Default())
 	r.POST("/register", AuthController.Register)
 	r.POST("/login", AuthController.Login)
+	r.POST("/guess", GuessController.GuessHandler)
 	r.Run("localhost:8080")
 }
