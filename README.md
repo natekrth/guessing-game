@@ -49,8 +49,8 @@ This guessing number game between 1 to 10.
 - **Description**: Register a new user.
   
   **Request Body**:
-    - `Username` (string)
-    - `Password` (string)
+    - `username` (string)
+    - `password` (string)
 
 #### Login
 - **Endpoint**: `/login`
@@ -58,8 +58,8 @@ This guessing number game between 1 to 10.
 - **Description**: Login for authenticated
   
   **Request Body**:
-    - `Username` (string)
-    - `Password` (string)
+    - `username` (string)
+    - `password` (string)
 
   **Return JSON**
    - `token`
@@ -83,6 +83,25 @@ This guessing number game between 1 to 10.
 
   **Return JSON**
    - `answer`
+
+#### Guessing Update Answer
+- **Endpoint**: `/guess/update`
+- **HTTP Method**: `PATCH`
+- **Description**: A new number for guessing (random)
+
+  **Request Body**:
+    - `update` (integer) the seed number for random new guess
+
+  **Return JSON**
+   - `answer`
+
+### Delete User
+- **Endpoint**: `/user/delete`
+- **HTTP Method**: `DELETE`
+- **Description**: Delete a user account from database
+
+  **Request Body**:
+    - `username` (string)
 
 ## User Interface
 ### Register Page
