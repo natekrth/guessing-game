@@ -43,7 +43,7 @@ func main() {
 
 	r.POST("/register", AuthController.Register)
 	r.POST("/login", AuthController.Login)
-	r.DELETE("/user/delete", AuthController.DeleteUser)
+	r.DELETE("/user/delete", middleware.JWTAuthen(), AuthController.DeleteUser)
 	r.POST("/guess", middleware.JWTAuthen(), GuessController.GuessHandler)
 	r.GET("/guess/ans", middleware.JWTAuthen(), GuessController.GuessAnswer)
 	r.PATCH("/guess/update", GuessController.UpdateAnswer)
