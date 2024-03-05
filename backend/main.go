@@ -37,13 +37,15 @@ func main() {
 	// CORS configuration
     config := cors.DefaultConfig()
     config.AllowOrigins = []string{"*"} // Allow all origins
-    config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+    config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE"}
     config.AllowHeaders = []string{"Authorization", "Content-Type"} // Allow Authorization header
     r.Use(cors.New(config))
 
 	r.POST("/register", AuthController.Register)
 	r.POST("/login", AuthController.Login)
+	r.DELETE("/user/delete", middleware.JWTAuthen(), AuthController.DeleteUser)
 	r.POST("/guess", middleware.JWTAuthen(), GuessController.GuessHandler)
 	r.GET("/guess/ans", middleware.JWTAuthen(), GuessController.GuessAnswer)
+	r.PATCH("/guess/update", middleware.JWTAuthen(), GuessController.UpdateAnswer)
 	r.Run("localhost:8080")
 }

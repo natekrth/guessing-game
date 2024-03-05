@@ -76,3 +76,32 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "message": "Login Failed"})
 	}
 }
+
+type DeleteBody struct {
+	Username string `json:"username" binding:"required"`
+}
+
+func DeleteUser(c *gin.Context) {
+    var requestBody DeleteBody
+	
+    if err := c.ShouldBindJSON(&requestBody); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    // Check if user exists
+    var user orm.User
+    if err := orm.Db.Where("username = ?", requestBody.Username).First(&user).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"status": "error", "message": "User not found"})
+        return
+    }
+
+    if err := orm.Db.Delete(&user).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "message": "Failed to delete user"})
+        fmt.Println("Error deleting user:", err)
+        return
+    }
+
+	orm.Db.Where("username = ?", requestBody.Username).Delete(&user)
+    c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "User deleted successfully", "s":requestBody.Username})
+}
