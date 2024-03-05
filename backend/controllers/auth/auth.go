@@ -83,20 +83,25 @@ type DeleteBody struct {
 
 func DeleteUser(c *gin.Context) {
     var requestBody DeleteBody
+	
     if err := c.ShouldBindJSON(&requestBody); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
     }
 
     // Check if user exists
-    var userExist orm.User
-    if err := orm.Db.Where("username = ?", requestBody.Username).First(&userExist).Error; err != nil {
+    var user orm.User
+    if err := orm.Db.Where("username = ?", requestBody.Username).First(&user).Error; err != nil {
         c.JSON(http.StatusNotFound, gin.H{"status": "error", "message": "User not found"})
         return
     }
 
-	user := orm.User{Username:requestBody.Username}
-	orm.Db.Delete(&user)
+    if err := orm.Db.Delete(&user).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "message": "Failed to delete user"})
+        fmt.Println("Error deleting user:", err)
+        return
+    }
 
-    c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "User deleted successfully"})
+	orm.Db.Where("username = ?", requestBody.Username).Delete(&user)
+    c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "User deleted successfully", "s":requestBody.Username})
 }
