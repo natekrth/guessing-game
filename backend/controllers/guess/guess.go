@@ -75,7 +75,7 @@ func UpdateAnswer(c *gin.Context) {
 
     update := requestBody.Update
 
-    guessingNumber := (guessingNumber * rand.Intn(update)) % 10 // random new number from the update seed
+    guessingNumber := ((guessingNumber * rand.Intn(update)) % 10)+1 // random new number from the update seed
 
     c.JSON(http.StatusOK, gin.H{"answer": guessingNumber})
 }
