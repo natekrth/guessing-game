@@ -103,5 +103,5 @@ func DeleteUser(c *gin.Context) {
     }
 
 	orm.Db.Where("username = ?", requestBody.Username).Delete(&user)
-    c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "User deleted successfully", "s":requestBody.Username})
+    c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "User deleted successfully"})
 }
