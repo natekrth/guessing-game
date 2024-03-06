@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Register({ handleRegister }) {
+function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [notify, setNotify] = useState("");
@@ -26,7 +26,7 @@ function Register({ handleRegister }) {
         },
         body: JSON.stringify({ username, password }),
       });
-    //   console.log(response);
+      // console.log(response);
       if (
         response.status === 409 ||
         response.status === 401 ||
@@ -37,7 +37,7 @@ function Register({ handleRegister }) {
         resetNotifyAfterDelay();
       } else if (response.status === 200) {
         setNotify("Register Successful");
-        navigate("/home"); // Redirect to Home page
+        navigate("/"); // Redirect to Login Page
       }
     } catch (error) {
       setNotify("Failed to Register. Please try again.");
